@@ -2,7 +2,9 @@ const fs = require('fs');
 const path = require('path');
 const readline = require('readline');
 
-const inputName = process.argv.slice(2).join(' ');
+const inputArgs = process.argv.slice(2);
+const isForced = inputArgs.includes('--force');
+const inputName = inputArgs.filter(arg => arg !== '--force').join(' ');
 
 if (!inputName) {
     console.error('Please provide a module name: npm run remove-module <name>');
@@ -27,8 +29,6 @@ if (!existsInApp && !existsInSidebar) {
     console.error(`Error: Module "${inputName}" (${moduleName}) was not found in /app or Sidebar.tsx.`);
     process.exit(1);
 }
-
-const isForced = process.argv.includes('--force');
 
 if (isForced) {
     performRemoval();

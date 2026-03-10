@@ -43,11 +43,14 @@ export default function Sidebar() {
                         { name: 'User Management', href: '/user-management' }
                     ]
                 },
-                
-                
-                
+
+
+
                 { name: 'CRUD', href: '/crud', icon: Settings },
-                
+
+
+
+                { name: 'Tett', href: '/tett', icon: Settings },
                 // MODULE_INSERTION_MARKER
             ]
         }
@@ -85,13 +88,13 @@ export default function Sidebar() {
                     <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center shadow-sm">
                         <span className="text-white font-bold text-xs">EX</span>
                     </div>
-                    <span className="text-md font-bold text-foreground tracking-tight">
+                    <span className="text-md font-bold text-sidebar-text tracking-tight">
                         Example Template
                     </span>
                 </Link>
                 <button
                     onClick={() => setIsOpen(false)}
-                    className="lg:hidden text-foreground/40 hover:text-foreground transition-colors"
+                    className="lg:hidden text-sidebar-text/40 hover:text-sidebar-text transition-colors"
                 >
                     <X size={20} />
                 </button>
@@ -99,7 +102,7 @@ export default function Sidebar() {
             <div className="flex-1 overflow-y-auto px-4 py-2 flex flex-col gap-6">
                 {menuGroups.map((group, index) => (
                     <div key={index}>
-                        <h3 className="text-[11px] font-bold text-foreground/40 uppercase tracking-wider mb-2 px-3">
+                        <h3 className="text-[11px] font-bold text-sidebar-text/40 uppercase tracking-wider mb-2 px-3">
                             {group.title}
                         </h3>
                         {group.items.length > 0 && (
@@ -117,11 +120,11 @@ export default function Sidebar() {
                                                     onClick={() => toggleSubMenu(item.name)}
                                                     className={cn(
                                                         "flex items-center justify-between w-full px-3 py-2.5 rounded-lg text-[14px] interactive-item transition-all",
-                                                        isActive ? "text-foreground font-semibold" : "text-foreground/60 hover:text-foreground font-medium"
+                                                        isActive ? "text-sidebar-text font-semibold" : "text-sidebar-text/60 hover:text-sidebar-text font-medium"
                                                     )}
                                                 >
                                                     <div className="flex items-center gap-3">
-                                                        <Icon className={cn("w-[18px] h-[18px]", isActive ? "text-foreground" : "text-foreground/40")} />
+                                                        <Icon className={cn("w-[18px] h-[18px]", isActive ? "text-sidebar-text" : "text-sidebar-text/80")} />
                                                         {item.name}
                                                     </div>
                                                     <ChevronRight size={16} className={cn("transition-transform duration-200", isExpanded && "rotate-90")} />
@@ -137,13 +140,13 @@ export default function Sidebar() {
                                                                     className={cn(
                                                                         "flex items-center px-3 py-2 rounded-lg text-[13px] font-semibold transition-all",
                                                                         isSubActive
-                                                                            ? "text-foreground bg-neutral/50"
-                                                                            : "text-foreground/40 hover:text-foreground hover:bg-neutral/30"
+                                                                            ? "text-sidebar-text bg-neutral/50"
+                                                                            : "text-sidebar-text/60 hover:text-sidebar-text hover:bg-neutral/30"
                                                                     )}
                                                                 >
                                                                     <span className={cn(
                                                                         "w-1.5 h-1.5 rounded-full mr-2",
-                                                                        isSubActive ? "bg-primary" : "bg-foreground/40"
+                                                                        isSubActive ? "bg-primary" : "bg-sidebar-text/60"
                                                                     )} />
                                                                     {sub.name}
                                                                 </Link>
@@ -162,11 +165,11 @@ export default function Sidebar() {
                                             className={cn(
                                                 "flex items-center gap-3 px-3 py-2.5 rounded-lg text-[14px] font-bold interactive-item",
                                                 isActive
-                                                    ? "bg-neutral text-foreground"
-                                                    : "text-foreground/60 hover:text-foreground"
+                                                    ? "bg-neutral text-sidebar-text"
+                                                    : "text-sidebar-text/60 hover:text-sidebar-text"
                                             )}
                                         >
-                                            <Icon className={cn("w-[18px] h-[18px]", isActive ? "text-foreground" : "text-foreground/40")} />
+                                            <Icon className={cn("w-[18px] h-[18px]", isActive ? "text-sidebar-text" : "text-sidebar-text/40")} />
                                             {item.name}
                                         </Link>
                                     );
@@ -183,7 +186,7 @@ export default function Sidebar() {
                         <div className="flex items-center gap-3 overflow-hidden">
                             {isLoading ? (
                                 <div className="w-9 h-9 rounded-full bg-neutral flex items-center justify-center">
-                                    <Loader2 className="w-4 h-4 text-foreground/40 animate-spin" />
+                                    <Loader2 className="w-4 h-4 text-sidebar-text/40 animate-spin" />
                                 </div>
                             ) : (
                                 <UserAvatar
@@ -195,15 +198,15 @@ export default function Sidebar() {
                                 />
                             )}
                             <div className="flex flex-col text-left overflow-hidden">
-                                <span className="text-xs font-bold text-foreground leading-none mb-1 truncate">
+                                <span className="text-xs font-bold text-sidebar-text leading-none mb-1 truncate">
                                     {isLoading ? 'Loading...' : (user?.Nickname || user?.AccountName || 'Guest User')}
                                 </span>
-                                <span className="text-xs text-foreground/50 font-medium truncate">
+                                <span className="text-xs text-sidebar-text/50 font-medium truncate">
                                     {isLoading ? 'Please wait' : (user?.Email || 'Not logged in')}
                                 </span>
                             </div>
                         </div>
-                        <MoreVertical className="w-4 h-4 text-foreground/40 group-hover:text-foreground transition-colors flex-shrink-0" />
+                        <MoreVertical className="w-4 h-4 text-sidebar-text/40 group-hover:text-sidebar-text transition-colors flex-shrink-0" />
                     </div>
                 </Dropdown>
             </div>
@@ -216,7 +219,7 @@ export default function Sidebar() {
                 <div className="flex items-center gap-3">
                     <button
                         onClick={() => setIsOpen(true)}
-                        className="p-2 text-foreground/60 hover:bg-neutral rounded-lg transition-colors"
+                        className="p-2 text-sidebar-text/60 hover:bg-neutral rounded-lg transition-colors"
                     >
                         <Menu size={24} />
                     </button>
@@ -224,7 +227,7 @@ export default function Sidebar() {
                         <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center shadow-sm">
                             <span className="text-white font-bold text-xs">AC</span>
                         </div>
-                        <span className="text-lg font-bold text-foreground tracking-tight leading-none uppercase tracking-tighter">template</span>
+                        <span className="text-lg font-bold text-sidebar-text tracking-tight leading-none uppercase tracking-tighter">template</span>
                     </Link>
                 </div>
             </header>

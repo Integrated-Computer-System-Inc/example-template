@@ -11,6 +11,7 @@
   --neutral: #F8FAFC;
   --border: #f1f5f9;
   --sidebar-bg: #ffffff;
+  --sidebar-text: #111827;
   --bg: #FFFFFF;
 }
 
@@ -26,6 +27,7 @@
   --neutral: #18181b;
   --border: #27272a;
   --sidebar-bg: #111111;
+  --sidebar-text: #FAFAFA;
   --bg: #141414;
 }
 
@@ -38,6 +40,7 @@
   --color-neutral: var(--neutral);
   --color-border: var(--border);
   --color-sidebar: var(--sidebar-bg);
+  --color-sidebar-text: var(--sidebar-text);
   --color-bg: var(--bg);
   --color-text: var(--text);
   --color-text-info: var(--text-info);
