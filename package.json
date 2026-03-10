@@ -6,12 +6,24 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "add-module": "node scripts/add-module.js",
+    "remove-module": "node scripts/remove-module.js"
   },
   "dependencies": {
+    "@ant-design/icons": "^6.1.0",
+    "@tanstack/react-query": "^5.90.21",
+    "antd": "^6.3.2",
+    "axios": "^1.13.6",
+    "clsx": "^2.1.1",
+    "dayjs": "^1.11.19",
+    "framer-motion": "^12.35.2",
+    "lucide-react": "^0.577.0",
     "next": "16.1.6",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-dom": "19.2.3",
+    "tailwind-merge": "^3.5.0",
+    "tech-stack-icons": "^3.7.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
