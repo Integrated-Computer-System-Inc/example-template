@@ -111,7 +111,8 @@ example-template/
 │   ├── Providers/              # React Query & Theme providers
 │   ├── Settings/               # Settings modal
 │   └── Table/                  # Reusable table components
-│       └── StatusChip.tsx      # Active/Inactive status tag
+│       ├── StatusChip.tsx      # Active/Inactive status tag
+│       └── TableBulkActions.tsx # Reusable floating bulk actions bar
 ├── hooks/                      # Custom React hooks
 │   ├── items/
 │   │   └── useItems.ts         # CRUD hooks (mock, with real API examples)
@@ -120,7 +121,11 @@ example-template/
 ├── interface/                  # TypeScript interfaces
 │   ├── item.ts                 # Item interface
 │   └── sidebar.ts              # Sidebar menu types
-├── lib/                        # Utilities (API client, etc.)
+├── lib/                        # Utilities
+│   ├── api.ts                  # API client
+│   └── utils.ts                # Tailwind class merging (cn utility)
+├── utils/                      # Helper functions
+│   └── clipboard.ts            # Clipboard copy utility (context-aware)
 ├── scripts/                    # CLI scripts
 │   ├── add-module.js           # Add module scaffolding
 │   └── remove-module.js        # Remove module scaffolding
@@ -150,6 +155,11 @@ The `ThemeProvider` manages the application's light/dark mode state. It works by
 - Dynamically attaching the `dark` class/data-attribute to the root HTML element.
 - Seamlessly integrating with our CSS Variables in `globals.css` to instantly reskin the UI across the entire app.
 
+### 4. Ant Design Static Bridge
+To use Ant Design services (like `message`, `notification`, or `modal`) inside non-React files (utilities/hooks), the `ThemeProvider` implements a **Static Bridge** via the `<App />` component.
+- This captures context-aware instances of these services.
+- **Usage**: Import them from `@/components/Providers/theme-provider` rather than directly from `antd` to ensure they respect the dynamic theme and context.
+
 ## Theming
 
 The app supports **light** and **dark** mode via CSS custom properties in `globals.css`.
@@ -175,8 +185,9 @@ The app supports **light** and **dark** mode via CSS custom properties in `globa
 The `app/crud/` module demonstrates a full CRUD pattern:
 
 - **Table** with search, filter popover, pagination, row selection
+- **Floating Bulk Actions** with dynamic buttons (e.g., Bulk Active/Inactive)
 - **Add/Edit dialog** with form validation
-- **View dialog** with detailed descriptions
+- **View dialog** with detailed descriptions and **copy-to-clipboard** buttons
 - **Delete confirmation** via `Modal.confirm`
 - **Hooks** in `hooks/items/useItems.ts` with mock data
 

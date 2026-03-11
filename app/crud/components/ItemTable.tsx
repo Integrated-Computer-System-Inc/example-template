@@ -4,13 +4,14 @@ import React, { useState } from 'react';
 import { Table, Button, Dropdown, Input, Modal } from 'antd';
 import type { MenuProps } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
-import { Search, Plus, RotateCcw, MoreHorizontal, Edit3, Eye, Trash2 } from 'lucide-react';
+import { Search, Plus, RotateCcw, MoreHorizontal, Edit3, Eye, Trash2, CheckCircle, XCircle } from 'lucide-react';
 import StatusChip from '@/components/Table/StatusChip';
 import EditItemDialog from '@/components/Crud/EditItemDialog';
 import ViewItemDialog from '@/components/Crud/ViewItemDialog';
 import ItemFilterPopover, { ItemFilterValues } from '@/components/Crud/ItemFilterPopover';
 import { Item } from '@/interface/item';
 import { useItems, useCreateItem, useUpdateItem, useDeleteItem } from '@/hooks/items/useItems';
+import TableBulkActions from '@/components/Table/TableBulkActions';
 
 export default function ItemTable() {
     const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
@@ -110,6 +111,28 @@ export default function ItemTable() {
                 }
             });
         }
+    };
+
+    const handleBulkStatusUpdate = (status: boolean) => {
+        modal.confirm({
+            title: 'Bulk Status Update',
+            content: `Are you sure you want to set ${selectedRowKeys.length} items to ${status ? 'Active' : 'Inactive'}?`,
+            okText: 'Yes, update all',
+            cancelText: 'Cancel',
+            centered: true,
+            onOk: async () => {
+                try {
+                    await Promise.all(
+                        selectedRowKeys.map((id) =>
+                            updateItem.mutateAsync({ id: Number(id), itemData: { status } })
+                        )
+                    );
+                    setSelectedRowKeys([]);
+                } catch (error) {
+                    console.error('Bulk update failed:', error);
+                }
+            },
+        });
     };
 
     const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
@@ -314,6 +337,25 @@ export default function ItemTable() {
                     visible={isViewModalVisible}
                     onClose={() => setIsViewModalVisible(false)}
                     item={selectedItem}
+                />
+
+                <TableBulkActions
+                    selectedCount={selectedRowKeys.length}
+                    onClearSelection={() => setSelectedRowKeys([])}
+                    actions={[
+                        {
+                            label: 'Bulk Active',
+                            icon: <CheckCircle size={18} />,
+                            onClick: () => handleBulkStatusUpdate(true),
+                            variant: 'success'
+                        },
+                        {
+                            label: 'Bulk Inactive',
+                            icon: <XCircle size={18} />,
+                            onClick: () => handleBulkStatusUpdate(false),
+                            variant: 'danger'
+                        }
+                    ]}
                 />
             </div>
         </div>

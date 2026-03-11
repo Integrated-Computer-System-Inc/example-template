@@ -1,9 +1,11 @@
 'use client';
 
 import React from 'react';
-import { Modal, Descriptions, Tag } from 'antd';
+import { Modal, Descriptions, Tag, Button, Tooltip } from 'antd';
+import { Copy } from 'lucide-react';
 import StatusChip from '@/components/Table/StatusChip';
 import { Item } from '@/interface/item';
+import { copyToClipboard } from '@/utils/clipboard';
 
 interface ViewItemDialogProps {
     visible: boolean;
@@ -41,10 +43,30 @@ export default function ViewItemDialog({ visible, onClose, item }: ViewItemDialo
 
             <Descriptions column={1} bordered size="small" styles={{ label: { width: '40%' } }}>
                 <Descriptions.Item label="ID">
-                    <span className="font-medium text-text">{item.id}</span>
+                    <div className="flex items-center justify-between group">
+                        <span className="font-medium text-text">{item.id}</span>
+                        <Tooltip title="Copy ID">
+                            <Button
+                                type="text"
+                                size="small"
+                                icon={<Copy size={14} className="text-gray-400 group-hover:text-primary transition-colors" />}
+                                onClick={() => copyToClipboard(item.id.toString(), 'ID')}
+                            />
+                        </Tooltip>
+                    </div>
                 </Descriptions.Item>
                 <Descriptions.Item label="Name">
-                    <span className="font-medium text-text-info">{item.name}</span>
+                    <div className="flex items-center justify-between group">
+                        <span className="font-medium text-text-info">{item.name}</span>
+                        <Tooltip title="Copy Name">
+                            <Button
+                                type="text"
+                                size="small"
+                                icon={<Copy size={14} className="text-gray-400 group-hover:text-primary transition-colors" />}
+                                onClick={() => copyToClipboard(item.name, 'Name')}
+                            />
+                        </Tooltip>
+                    </div>
                 </Descriptions.Item>
                 <Descriptions.Item label="Description">
                     <span className="font-medium text-text-info">{item.description || 'N/A'}</span>
