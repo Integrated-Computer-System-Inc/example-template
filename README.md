@@ -117,7 +117,9 @@ example-template/
 │   ├── items/
 │   │   └── useItems.ts         # CRUD hooks (mock, with real API examples)
 │   ├── login/                  # Auth hooks
-│   └── sidebar/                # Sidebar expansion hook
+│   ├── sidebar/                # Sidebar expansion hook
+│   └── table/                  # Table hooks
+│       └── useTableUrlSync.ts      # URL & Table state management hook
 ├── interface/                  # TypeScript interfaces
 │   ├── item.ts                 # Item interface
 │   └── sidebar.ts              # Sidebar menu types
@@ -160,6 +162,13 @@ To use Ant Design services (like `message`, `notification`, or `modal`) inside n
 - This captures context-aware instances of these services.
 - **Usage**: Import them from `@/components/Providers/theme-provider` rather than directly from `antd` to ensure they respect the dynamic theme and context.
 
+### 5. Table URL Synchronization (`hooks/table/useTableUrlSync.ts`)
+The `useTableUrlSync` hook is a central manager for table logic. It:
+- **Autonomous State**: Manages `searchValue`, `activeFilters`, and `pagination` internally.
+- **URL Mirroring**: Automatically reflects all table changes in the URL query parameters.
+- **Persistence**: Rehydrates the table state from the URL on page reload or navigation.
+- **Clean Components**: Allows table components (like `ItemTable.tsx`) to remain lightweight by destructuring pre-built handlers like `handleSearchApply` and `handleFilterApply`.
+
 ## Theming
 
 The app supports **light** and **dark** mode via CSS custom properties in `globals.css`.
@@ -185,6 +194,7 @@ The app supports **light** and **dark** mode via CSS custom properties in `globa
 The `app/crud/` module demonstrates a full CRUD pattern:
 
 - **Table** with search, filter popover, pagination, row selection
+- **Persistent State**: Search, filters, and pagination are mirrored in the **URL** (via `useTableUrlSync`)
 - **Floating Bulk Actions** with dynamic buttons (e.g., Bulk Active/Inactive)
 - **Add/Edit dialog** with form validation
 - **View dialog** with detailed descriptions and **copy-to-clipboard** buttons

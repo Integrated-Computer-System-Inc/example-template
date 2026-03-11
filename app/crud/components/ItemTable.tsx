@@ -8,36 +8,29 @@ import { Search, Plus, RotateCcw, MoreHorizontal, Edit3, Eye, Trash2, CheckCircl
 import StatusChip from '@/components/Table/StatusChip';
 import EditItemDialog from '@/components/Crud/EditItemDialog';
 import ViewItemDialog from '@/components/Crud/ViewItemDialog';
-import ItemFilterPopover, { ItemFilterValues } from '@/components/Crud/ItemFilterPopover';
+import ItemFilterPopover, { ItemFilterValues } from '@/app/crud/components/ItemFilterPopover';
 import { Item } from '@/interface/item';
 import { useItems, useCreateItem, useUpdateItem, useDeleteItem } from '@/hooks/items/useItems';
 import TableBulkActions from '@/components/Table/TableBulkActions';
-import { useSearchParams } from 'next/navigation';
-import { useTableUrlSync } from '@/hooks/useTableUrlSync';
+import { useTableUrlSync } from '@/hooks/table/useTableUrlSync';
 
 export default function ItemTable() {
     const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
-    const searchParams = useSearchParams();
 
-    // Filter states initialized from URL params
-    const [activeFilters, setActiveFilters] = useState<ItemFilterValues>(() => {
-        const statusVal = searchParams.get('status');
-        return {
-            category: searchParams.get('category'),
-            status: statusVal === 'true' ? true : statusVal === 'false' ? false : null,
-        };
-    });
+    // Handle table state and URL synchronization
+    const {
+        activeFilters,
+        appliedSearch,
+        pagination,
+        searchValue,
+        handleReset,
+        handleSearchChange,
+        handleSearchApply,
+        handleFilterApply,
+        handleTableChange
+    } = useTableUrlSync();
 
-    const [pagination, setPagination] = useState(() => ({
-        current: Number(searchParams.get('page')) || 1,
-        pageSize: Number(searchParams.get('pageSize')) || 10,
-    }));
-
-    const [searchValue, setSearchValue] = useState(searchParams.get('search') || '');
-    const [appliedSearch, setAppliedSearch] = useState(searchParams.get('search') || '');
-
-    // Sync state with URL
-    useTableUrlSync(activeFilters, appliedSearch, pagination);
+    // Modal states
     const [selectedItem, setSelectedItem] = useState<Item | null>(null);
     const [isEditModalVisible, setIsEditModalVisible] = useState(false);
     const [isViewModalVisible, setIsViewModalVisible] = useState(false);
@@ -75,13 +68,6 @@ export default function ItemTable() {
         setIsEditing(false);
         setSelectedItem(null);
         setIsEditModalVisible(true);
-    };
-
-    const handleReset = () => {
-        setSearchValue('');
-        setAppliedSearch('');
-        setActiveFilters({ category: null, status: null });
-        setPagination(prev => ({ ...prev, current: 1 }));
     };
 
     const handleEditItem = (item: Item) => {
@@ -266,13 +252,6 @@ export default function ItemTable() {
         onChange: onSelectChange,
     };
 
-    const handleTableChange = (newPagination: any) => {
-        setPagination({
-            current: newPagination.current,
-            pageSize: newPagination.pageSize,
-        });
-    };
-
     return (
         <div className="relative">
             {contextHolder}
@@ -289,18 +268,8 @@ export default function ItemTable() {
                             prefix={<Search size={18} className="text-text-info" />}
                             className="w-full md:w-[280px] rounded-lg h-10 border-border"
                             value={searchValue}
-                            onChange={(e) => {
-                                const val = e.target.value;
-                                setSearchValue(val);
-                                if (val === '') {
-                                    setAppliedSearch('');
-                                    setPagination(prev => ({ ...prev, current: 1 }));
-                                }
-                            }}
-                            onPressEnter={() => {
-                                setAppliedSearch(searchValue);
-                                setPagination(prev => ({ ...prev, current: 1 }));
-                            }}
+                            onChange={(e) => handleSearchChange(e.target.value)}
+                            onPressEnter={handleSearchApply}
                             allowClear
                         />
                         <Button
@@ -312,10 +281,7 @@ export default function ItemTable() {
                         </Button>
                         <ItemFilterPopover
                             currentFilters={activeFilters}
-                            onApply={(values) => {
-                                setActiveFilters(values);
-                                setPagination(prev => ({ ...prev, current: 1 }));
-                            }}
+                            onApply={handleFilterApply}
                         />
                         <Button
                             type="primary"
