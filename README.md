@@ -201,13 +201,19 @@ The `app/crud/` module demonstrates a full CRUD pattern:
 - **Delete confirmation** via `Modal.confirm`
 - **Hooks** in `hooks/items/useItems.ts` with mock data
 
-### Connecting to a Real API
+### Connecting to a Real API (Example Template API)
 
-The hooks file has two versions of each hook — a commented-out **real API** version and an active **mock** version. To switch:
+This frontend template is designed to easily plug into the backend counterpart repository: **[example-template-api](https://github.com/jesurena/example-template-api)**.
 
-1. Uncomment `import api from '@/lib/api'` at the top
-2. Uncomment the **REAL API version** of each hook
-3. Delete or comment out the **MOCK version** below it
+**Steps to configure the frontend for a live API:**
+
+1. Ensure the backend API (`example-template-api`) is running locally on `http://localhost:8000`.
+2. Configure your frontend `.env.local` to point directly to the backend URL:
+   ```env
+   LARAVEL_API_URL=http://localhost:8000/api
+   ```
+3. Update the `hooks/items/useItems.ts` logic. By default, out-of-the-box it points to the live backend URL using `useQuery` via Axios.
+4. If your backend uses wildcard origins (`Access-Control-Allow-Origin: *`) without authentication, ensure `withCredentials: true` is commented out inside `lib/api.ts` to prevent Chrome/Firefox CORS blockage!
 
 ## License
 
