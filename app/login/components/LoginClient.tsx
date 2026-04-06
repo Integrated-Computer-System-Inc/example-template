@@ -72,7 +72,7 @@ export default function LoginClient() {
                         Lorem Ipsum is simply dummy text.
                     </h2>
                     <p className="text-blue-100 text-lg lg:text-xl leading-relaxed mb-12 opacity-90">
-                        Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+                        Lorem Ipsum has been the industry&apos;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
                     </p>
                 </div>
             </div>

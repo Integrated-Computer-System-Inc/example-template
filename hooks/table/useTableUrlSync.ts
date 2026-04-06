@@ -75,11 +75,11 @@ export const useTableUrlSync = () => {
         setPagination(prev => ({ ...prev, current: 1 }));
     };
 
-    const handleTableChange = (newPagination: any) => {
-        setPagination({
-            current: newPagination.current,
-            pageSize: newPagination.pageSize,
-        });
+    const handleTableChange = (newPagination: Partial<PaginationState>) => {
+        setPagination(prev => ({
+            current: newPagination.current ?? prev.current,
+            pageSize: newPagination.pageSize ?? prev.pageSize,
+        }));
     };
 
     return {

@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
 import { ConfigProvider, theme as antdTheme, App } from 'antd';
 
 let message: any;
@@ -20,9 +21,11 @@ function StaticApp() {
         modal: mdl
     } = App.useApp();
 
-    message = msg;
-    notification = notify;
-    modal = mdl;
+    useEffect(() => {
+        message = msg;
+        notification = notify;
+        modal = mdl;
+    }, [msg, notify, mdl]);
 
     return null;
 }
@@ -40,12 +43,40 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     const [theme, setThemeState] = useState<Theme>('system');
     const [isDark, setIsDark] = useState<boolean>(false);
 
+    const applyThemeClasses = useCallback((dark: boolean) => {
+        const root = window.document.documentElement;
+        if (dark) {
+            root.classList.remove('light');
+            root.classList.add('dark');
+            root.setAttribute('data-theme', 'dark');
+        } else {
+            root.classList.remove('dark');
+            root.classList.add('light');
+            root.setAttribute('data-theme', 'light');
+        }
+    }, []);
+
+    const applyTheme = useCallback((newTheme: Theme) => {
+        let isDarkMode = false;
+
+        const systemIsDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (newTheme === 'system') {
+            isDarkMode = systemIsDark;
+        } else {
+            isDarkMode = newTheme === 'dark';
+        }
+
+        setIsDark(isDarkMode);
+        applyThemeClasses(isDarkMode);
+    }, [applyThemeClasses]);
+
     // Initialize theme from localStorage or default to system
     useEffect(() => {
         const savedTheme = (localStorage.getItem('app-theme') as Theme) || 'system';
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setThemeState(savedTheme);
         applyTheme(savedTheme);
-    }, []);
+    }, [applyTheme]);
 
     // Listen to system theme changes if 'system' is currently selected
     useEffect(() => {
@@ -60,34 +91,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
         mq.addEventListener('change', handler);
         return () => mq.removeEventListener('change', handler);
-    }, [theme]);
-
-    const applyThemeClasses = (dark: boolean) => {
-        const root = window.document.documentElement;
-        if (dark) {
-            root.classList.remove('light');
-            root.classList.add('dark');
-            root.setAttribute('data-theme', 'dark');
-        } else {
-            root.classList.remove('dark');
-            root.classList.add('light');
-            root.setAttribute('data-theme', 'light');
-        }
-    };
-
-    const applyTheme = (newTheme: Theme) => {
-        let isDarkMode = false;
-
-        const systemIsDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        if (newTheme === 'system') {
-            isDarkMode = systemIsDark;
-        } else {
-            isDarkMode = newTheme === 'dark';
-        }
-
-        setIsDark(isDarkMode);
-        applyThemeClasses(isDarkMode);
-    };
+    }, [theme, applyThemeClasses]);
 
     const setTheme = (newTheme: Theme) => {
         setThemeState(newTheme);

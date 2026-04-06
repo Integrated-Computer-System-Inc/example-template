@@ -1,15 +1,9 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Modal, Select } from 'antd';
-import { useTheme, type Theme } from '@/components/Providers/theme-provider';
+import { useTheme } from '@/components/Providers/theme-provider';
 import { Settings, Sun, Moon, Monitor, X } from 'lucide-react';
-import { clsx, type ClassValue } from 'clsx';
-import { twMerge } from 'tailwind-merge';
-
-function cn(...inputs: ClassValue[]) {
-    return twMerge(clsx(inputs));
-}
 
 interface SettingsModalProps {
     visible: boolean;
@@ -108,7 +102,7 @@ export default function SettingsModal({ visible, onClose }: SettingsModalProps) 
                                 className="w-full sm:w-64"
                             />
                             <p className="text-xs text-foreground/50 mt-2">
-                                Select how you'd like the UI to appear on your screen.
+                                Select how you&apos;d like the UI to appear on your screen.
                             </p>
                         </div>
                     </div>

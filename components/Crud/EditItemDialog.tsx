@@ -9,7 +9,7 @@ const { TextArea } = Input;
 interface EditItemDialogProps {
     visible: boolean;
     onCancel: () => void;
-    onSave: (values: any) => void;
+    onSave: (values: Partial<Item>) => void;
     item: Item | null;
     isEditing: boolean;
     confirmLoading?: boolean;

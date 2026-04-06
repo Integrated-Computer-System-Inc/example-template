@@ -8,7 +8,7 @@ import { Search, Plus, RotateCcw, MoreHorizontal, Edit3, Eye, Trash2, CheckCircl
 import StatusChip from '@/components/Table/StatusChip';
 import EditItemDialog from '@/components/Crud/EditItemDialog';
 import ViewItemDialog from '@/components/Crud/ViewItemDialog';
-import ItemFilterPopover, { ItemFilterValues } from '@/app/crud/components/ItemFilterPopover';
+import ItemFilterPopover from '@/app/crud/components/ItemFilterPopover';
 import { Item } from '@/interface/item';
 import { useItems, useCreateItem, useUpdateItem, useDeleteItem } from '@/hooks/items/useItems';
 import TableBulkActions from '@/components/Table/TableBulkActions';
@@ -97,7 +97,7 @@ export default function ItemTable() {
         });
     };
 
-    const handleSaveItem = (values: any) => {
+    const handleSaveItem = (values: Partial<Item>) => {
         if (isEditing && selectedItem) {
             updateItem.mutate({ id: selectedItem.id, itemData: values }, {
                 onSuccess: () => {
@@ -186,7 +186,7 @@ export default function ItemTable() {
             title: '',
             key: 'action',
             width: 50,
-            render: (_: any, record: Item) => {
+            render: (_text: unknown, record: Item) => {
                 const menuItems: MenuProps['items'] = [
                     {
                         key: 'view',
@@ -196,7 +196,7 @@ export default function ItemTable() {
                                 <span>View Details</span>
                             </div>
                         ),
-                        onClick: ({ domEvent }: any) => {
+                        onClick: ({ domEvent }: { domEvent: React.SyntheticEvent }) => {
                             domEvent.stopPropagation();
                             handleViewItem(record);
                         }
@@ -209,7 +209,7 @@ export default function ItemTable() {
                                 <span>Edit Item</span>
                             </div>
                         ),
-                        onClick: ({ domEvent }: any) => {
+                        onClick: ({ domEvent }: { domEvent: React.SyntheticEvent }) => {
                             domEvent.stopPropagation();
                             handleEditItem(record);
                         }
@@ -225,7 +225,7 @@ export default function ItemTable() {
                                 <span>Delete Item</span>
                             </div>
                         ),
-                        onClick: ({ domEvent }: any) => {
+                        onClick: ({ domEvent }: { domEvent: React.SyntheticEvent }) => {
                             domEvent.stopPropagation();
                             handleDeleteItem(record);
                         }

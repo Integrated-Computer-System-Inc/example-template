@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports, @typescript-eslint/no-unused-vars */
 const readline = require('readline');
 const { spawn } = require('child_process');
 const path = require('path');
@@ -39,7 +40,7 @@ const getInstalledModules = () => {
             .filter(dirent => dirent.isDirectory())
             .map(dirent => dirent.name);
         return dirs;
-    } catch (e) {
+    } catch {
         return [];
     }
 };

@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "type-check": "tsc --noEmit",
     "cli": "node scripts/cli.js",
     "add-module": "node scripts/add-module.js",
     "remove-module": "node scripts/remove-module.js"

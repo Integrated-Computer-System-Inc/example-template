@@ -11,7 +11,7 @@ export function useSidebarExpansion(pathname: string, menuGroups: MenuGroup[]) {
         if (saved) {
             try {
                 initialExpanded = JSON.parse(saved);
-            } catch (e) { }
+            } catch { }
         }
 
         const activeGroups = menuGroups.flatMap(group =>
@@ -21,8 +21,10 @@ export function useSidebarExpansion(pathname: string, menuGroups: MenuGroup[]) {
         );
 
         const merged = Array.from(new Set([...initialExpanded, ...activeGroups]));
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setExpandedMenus(merged);
         setIsInitialized(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
